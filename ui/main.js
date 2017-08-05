@@ -23,7 +23,7 @@ button.onclick=function(){
  //submit name
  var nameInput=document.getElementById('name');
  var name=nameInput.value;
- var submit=document.getElemenyById('');
+ var submit=document.getElemenyById('submit_btn');
  submit.onclick=function(){
      //make req to seerver n send the name
      
