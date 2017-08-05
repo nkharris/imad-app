@@ -21,8 +21,7 @@ button.onclick=function(){
  };
  
  //submit name
- var nameInput=document.getElementById('name');
- var name=nameInput.value;
+X
  var submit=document.getElementById('submit_btn');
  submit.onclick=function(){
 
@@ -48,8 +47,12 @@ button.onclick=function(){
       }
       // not done yet
   };
+ 
+ 
+ 
   //make the request
-  
+ var nameInput=document.getElementById('name');
+ var name=nameInput.value;
   request.open('GET', 'http://harrisnk1998.imad.hasura-app.io/submit-name?name'+name, true);
   request.send(null);
   
