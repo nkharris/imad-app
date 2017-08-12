@@ -125,7 +125,7 @@ app.get('/submit-name',function(req,res){
     
     names.push(name);
     //json   
-    res.send(JSON.stringify( names));
+    res.send(JSON.stringify(result.rows));
 });
 
 app.get('/:articlename', function (req, res) {
