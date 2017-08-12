@@ -106,7 +106,7 @@ app.get('/test-db', function(req,res){
       if(err){
           res.status(500).send(err.toString());
       }else{
-          res.send(JSON.stringify(result));
+          res.send(JSON.stringify(result.rows));
       }
   });
 });
@@ -125,7 +125,7 @@ app.get('/submit-name',function(req,res){
     
     names.push(name);
     //json   
-    res.send(JSON.stringify(result.rows));
+    res.send(JSON.stringify( names));
 });
 
 app.get('/:articlename', function (req, res) {
