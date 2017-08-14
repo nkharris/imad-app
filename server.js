@@ -18,7 +18,7 @@ var articles={
     'article-one':{
     title: 'Article One| HARRIS KUMAR',
     heading:'Article One',
-    date:'Sep 5 2017',
+    date:'Sep 5, 2017',
     content:` <p>
                     I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
                     I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
