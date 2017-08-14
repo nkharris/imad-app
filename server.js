@@ -1,163 +1,65 @@
 var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
-var Pool = require('pg').Pool;
 
-var config={
-    user:'harrisnk1998',
-    database:'harrisnk1998',
-    host:'db.imad.hasura-app.io',
-    port:'5432',
-    password:process.env.DB_PASSWORD
-};
 var app = express();
 app.use(morgan('combined'));
 
-var articles={
-    
-    'article-one':{
-    title: 'Article One| HARRIS KUMAR',
-    heading:'Article One',
-    date:'Sep 5 2017',
-    content:` <p>
-                    I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
-                    I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
-                    I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
-                </p>
-                 <p>
-                    I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
-                    I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
-                    I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
-                </p>
-                 <p>
-                    I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
-                    I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
-                    I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
-                </p>`
-    },
-    
-    'article-two':{
-    title: 'Article TWO| HARRIS KUMAR',
-    heading:'Article TWO',
-    date:'Sep 10 2017',
-    content:` <p>
-                    Content for 2nd article!!!
-                </p>`
-    },
-    
-    'article-three':{
-    title: 'Article THREE| HARRIS KUMAR',
-    heading:'Article THREE',
-    date:'Sep 15 2017',
-    content:` <p>
-                    Content for 3nd article!!!
-                </p>`
-    }
+var articles = {
+  'article-one': {
+    title: "Article One",
+    date: "25 October 2015",
+    content: "This is the content of article one",
+    author: "Tushar Chenan"
+  },
+  'article-two': {
+    title: "Article Two",
+    date: "25 November 2015",
+    content: "This is the content of article two",
+    author: "Tushar Chenan"
+  },
+  'article-three': {
+    title: "Article Three",
+    date: "25 December 2015",
+    content: "This is the content of article three",
+    author: "Tushar Chenan"
+  },
 };
 
-function createtemplate(data) 
-{   var title=data.title;
-    var date=data.date;
-    var heading=data.heading;
-    var content=data.content;
-    var htmltemplate=
-    `
-    <html>
-        <head>
-            <title>
-                ${title}
-            </title>
-            <meta name="viewport" content="width=device-width,initial-scale=1" />
-            <link href="/ui/style.css" rel="stylesheet" />
-        
-        </head>
-        <body>
-            <div class="container">
-                <div>
-                    <a href="/">Home</a>
-                </div>
-                <hr/>
-                <h3>
-                    ${heading}
-                </h3>
-                <div>
-                    ${date.toDateString()}
-                </div>
-                <div>
-                    ${content}
-                </div>
-        </div>
-        </body>
-    </html>
-    
-    `;
-    return htmltemplate;
-}
+var createTemplate = (article) => {
+  var title = articles["article-"+article].title;
+  var date = articles["article-"+article].date;
+  var content = articles["article-"+article].content;
+  var author = articles["article-"+article].author;
+  
+  var templateString = `
+  <html>
+    <head>
+        <title>${title}</title>
+    </head>
+    <body>
+        <h1>Article ${article}</h1>
+        <br>
+        <h3>${date}</h3>
+        <br>
+        <h3> By: ${author} </h3>
+        <br>
+        <p>${content}</p>
+        <br>
+        Copyright @2017 Tushar Chenan
+    </body>
+  </html>
+  `;
+  return templateString;
+};
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'index.html'));
 });
 
-var pool=new Pool(config);
-app.get('/test-db', function(req,res){
-  // make a select req
-  //return a response
-  pool.query("SELECT * FROM test",function(err,result) {
-      if(err){
-          res.status(500).send(err.toString());
-      }else{
-          res.send(JSON.stringify(result.rows));
-      }
-  });
-});
-
-var counter=0;
-app.get('/counter',function(req,res){
-    counter=counter+1;
-    res.send(counter.toString());
-});
-
-var names=[];
-app.get('/submit-name',function(req,res){
-    //URL; /submit-name?name=xxxxx
-    //get name from request
-    var name=req.query.name;
-    
-    names.push(name);
-    //json   
-    res.send(JSON.stringify( names));
-});
-
-app.get('/:articleName',function (req,res){
-    var articleName= req.params.articleName;
-    res.send(createTemplate (articles[articleName]));
-});
-
-app.get('/articles/:articleName', function (req, res) {
-    //articlename == article-one
-    //articles[articlename]=={} content object for article one
-   
-   //select * from article where title='article-one' 
-  pool.query("SELECT * FROM article WHERE title = '" +  req.params.articleName + "'"  ,function(err, result)
-     {
-      if(err)
-      {
-          res.status(500).send(err.toString());
-      }else 
-          {
-          if(result.rows.length===0){
-              res.status(401).send('Article not found');
-          }else{
-              var articleData=result.rows[0];
-              res.send(createTemplate(articleData));
-          }
-      }
-  });
-});
-
-
-app.get('/ui/main.js', function (req, res) {
-  res.sendFile(path.join(__dirname, 'ui', 'main.js'));
+app.get("/article/:artno", (req,res) => {
+    var artno = req.params.artno;
+    res.send(createTemplate(artno)); 
 });
 
 app.get('/ui/style.css', function (req, res) {
@@ -167,7 +69,6 @@ app.get('/ui/style.css', function (req, res) {
 app.get('/ui/madi.png', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'madi.png'));
 });
-
 
 
 // Do not change port, otherwise your app won't run on IMAD servers
