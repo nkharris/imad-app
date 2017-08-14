@@ -8,7 +8,7 @@ var config={
     database:'harrisnk1998',
     host:'db.imad.hasura-app.io',
     port:'5432',
-    password:db-harrisnk1998-69234
+    password:process.env.DB_PASSWORD
 };
 var app = express();
 app.use(morgan('combined'));
@@ -18,7 +18,7 @@ var articles={
     'article-one':{
     title: 'Article One| HARRIS KUMAR',
     heading:'Article One',
-    date:'Sep 5, 2017',
+    date:'Sep 5 2017',
     content:` <p>
                     I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
                     I won't write anything here...hahaha!!!I won't write anything here...hahaha!!!
@@ -128,7 +128,7 @@ app.get('/submit-name',function(req,res){
     res.send(JSON.stringify( names));
 });
 
-app.get('/article/:articleName', function (req, res) {
+app.get('/articles/:articleName', function (req, res) {
     //articlename == article-one
     //articles[articlename]=={} content object for article one
    
