@@ -7,7 +7,7 @@ var config={
     user:'harrisnk1998',
     database:'harrisnk1998',
     host:'db.imad.hasura-app.io',
-    port:'5432',
+    port:'localhost:5432',
     password:process.env.DB_PASSWORD
 };
 var app = express();
@@ -133,7 +133,7 @@ app.get('/articles/:articleName', function (req, res) {
     //articles[articlename]=={} content object for article one
    
    //select * from article where title='article-one' 
-  pool.query("SELECT * FROM article WHERE title = " +  req.params.articleName  ,function(err, result)
+  pool.query("SELECT * FROM article WHERE title = '" +  req.params.articleName + "'"  ,function(err, result)
      {
       if(err)
       {
