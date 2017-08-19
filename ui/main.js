@@ -63,7 +63,7 @@
    
    
     //make the request
-    var name = nameInput.value;
+ 
   var nameInput=document.getElementById('name');
    request.open('GET', 'http://harrisnk1998.imad.hasura-app.io/submit-name?name='+name, true);
    request.send(null);
