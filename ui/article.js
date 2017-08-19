@@ -10,6 +10,7 @@ function loadCommentForm () {
         <input type="submit" id="submit" value="Submit" />
         <br/>
         `;
+        commentFormHtml;
         commentFormHtml=document.getElementById('comment_form').innerHTML;
     document.getElementById('comment_form').innerHTML = commentFormHtml;
     
