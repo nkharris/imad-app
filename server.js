@@ -52,7 +52,15 @@ function createTemplate(data)
                 <div>
                     ${content}
                 </div>
+                <hr/>
+              <h4>Comments</h4>
+              <div id="comment_form">
+              </div>
+              <div id="comments">
+                <center>Loading comments...</center>
+              </div>
         </div>
+        <script type="text/javascript" src="/ui/article.js"></script>
         </body>
     </html>
     
@@ -132,18 +140,24 @@ app.post('/login',function(req,res){
   });  
 });
 
-app.get('/check-login',function(req,res){
-   if(req.session && req.session.auth && req.session.auth.userId){
-       res.send('You are logged in:' + req.session.auth.userId.toString());
-    }else {
-        res.send('you are not logged in');
-    }
-   
+app.get('/check-login', function (req, res) {
+   if (req.session && req.session.auth && req.session.auth.userId) {
+       // Load the user object
+       pool.query('SELECT * FROM "user" WHERE id = $1', [req.session.auth.userId], function (err, result) {
+           if (err) {
+              res.status(500).send(err.toString());
+           } else {
+              res.send(result.rows[0].username);    
+           }
+       });
+   } else {
+       res.status(400).send('You are not logged in');
+   }
 });
 
 app.get('/logout',function(req,res){
    delete req.session.auth;
-   res.send('logged out');
+   res.send('<html><body>Logged out!<br/><br/><a href="/">Back to home</a></body></html>');
 });
 
 
